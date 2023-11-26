@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FingerprintJS Example</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3.8.0/dist/fp.min.js"></script>
+</head>
+<body>
+    <button id="runFingerprint">Run FingerprintJS</button>
+
+    <script>
+        document.getElementById('runFingerprint').addEventListener('click', async () => {
+            try {
+                // Initialize FingerprintJS
+                const fp = await FingerprintJS.load();
+                const result = await fp.get();
+
+                // Log fingerprint result to console
+                console.log(result);
+
+                // Write result to CSV (adjust this part according to your needs)
+                const csvContent = `UserAgent,${result.components.useragent}\n`;
+                const blob = new Blob([csvContent], { type: 'text/csv' });
+                const link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = 'fingerprint.csv';
+                link.click();
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+    </script>
+</body>
+</html>
